@@ -2,13 +2,18 @@ from uuid import uuid4
 from datetime import datetime
 
 
-
 class Bike:
     def __init__(self, type_, manufacturer, year):
         self.type_ = type_
         self.manufacturer = manufacturer
         self.year = year
         self.status = "AVAILABLE"
+
+    def __str__(self):
+        return f"{self.manufacturer.capitalize()} Bike of type '{self.type_}' with {self.year} years of using "
+
+    def __repr__(self):
+        return f"Bike{self.type_, self.manufacturer, self.year}"
 
 
 class Bill:
@@ -28,6 +33,9 @@ class User:
         self.email = email
         self.secret_key = str(self.id)[0: 5]
 
+    def __repr__(self):
+        return f"User{self.username, self.email}"
+
 
 class Client(User):
     def __init__(self, username, email, address):
@@ -35,6 +43,8 @@ class Client(User):
         self.address = address
         self.rented_bike = None
 
+    def __repr__(self):
+        return f"Client{self.username, self.email, self.address}"
 
 
 class Partner(User):
@@ -43,3 +53,6 @@ class Partner(User):
         self.bike = bike
         self.balance = 0
         self.payed = False
+
+    def __repr__(self):
+        return f"Partner{self.username, self.email, self.bike}"

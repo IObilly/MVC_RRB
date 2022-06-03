@@ -1,5 +1,13 @@
 from db import bikes, bills, rented_bikes, available_bikes, users
-from model import Client, Partner, User
+from model import Client, Partner, User, Bike
+
+
+class RegisterController:
+    def __init__(self):
+        self.users = users
+
+    def register(self, user):
+        self.users.append(user)
 
 
 class BillController:
@@ -113,7 +121,7 @@ class UserController:
 
 class ClientController:
     def __init__(self):
-        self.clients = []
+        self.clients = users
 
     def add_client(self, username, email, address):
         self.clients.append(Client(username, email, address))
@@ -123,7 +131,7 @@ class ClientController:
 
     def get_client(self, username=None, email=None, key=None):
         return next(client for client in self.clients if client.username == username or
-                    client.email == email or client.id[0, 5] == key)
+                    client.email == email or str(client.id)[0:5] == key)
 
     def get_client_id(self):
         return next(client.id for client in self.clients if client == self)

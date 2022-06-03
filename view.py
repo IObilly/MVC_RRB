@@ -2,7 +2,7 @@ import sys
 import time
 
 from contoller import UserController, RentController, ClientController, PartnerController, BikeController, \
-    BillController
+    BillController, RegisterController
 from db import users
 
 
@@ -10,6 +10,7 @@ class RegisterView:
     def __init__(self):
         self.users = users
         self.controller = UserController()
+        self.register_controller = RegisterController()
 
     def main_menu(self):
         username = input("Entre your desired username: ")
@@ -21,6 +22,7 @@ class RegisterView:
         user = self.controller.get_user(username)
         print(f"//{self.controller.get_secret_key(user)}// This is your Secret Key, please keep it where you can "
               f"remember it and DO NOT share it with anyone")
+        self.register_controller.register(self.controller.add_user(username, email))
         ClientView().main_menu()
 
 
@@ -36,7 +38,9 @@ class LoginView:
         while c < 4:
             if self.controller.get_user(username) is not None and (self.controller.get_user(username)).email == email:
                 print(f"Welcome Back {username}")
-                ClientView()
+                print((self.users[0]).secret_key)
+                ClientView().main_menu()
+
 
                 break
             else:
@@ -79,12 +83,14 @@ class ClientView:
         choice = int(input(">>> "))
         if choice == 1:
             for i in range(len(self.rent_controller.bike_list())):
-                print(f"{i} > {self.rent_controller.bike_list()[i]}")
+                print(f"{i} > {str(self.rent_controller.bike_list()[i])}")
+
             bike_choice = int(input("Pick your Desired Bike"))
             while bike_choice not in range(len(self.rent_controller.bike_list())):
                 bike_choice = int(input("invalid Choice , please try again!.."))
             chosen_bike = self.rent_controller.bike_list()[bike_choice]
             self.rent_controller.rent(chosen_bike)
+            print("Enjoy Your Ride!")
         elif choice == 2:
             self.rent_controller.return_bike()
         elif choice == 3:
